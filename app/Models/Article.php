@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class Article extends Model
 {
@@ -23,6 +24,12 @@ class Article extends Model
         'source_url',
         'published_at',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => Cache::flush());
+        static::deleted(fn () => Cache::flush());
+    }
 
     protected function casts(): array
     {
