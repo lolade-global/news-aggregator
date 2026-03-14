@@ -28,6 +28,7 @@ fix:
 
 fetch-news:
 	./vendor/bin/sail artisan news:fetch
+	./vendor/bin/sail artisan queue:work --stop-when-empty
 
 db-fresh:
 	./vendor/bin/sail artisan migrate:fresh

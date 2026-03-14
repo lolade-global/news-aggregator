@@ -33,7 +33,7 @@ A Laravel backend that aggregates news articles from multiple sources into a sin
 
 ```bash
 # Clone the repository
-git clone <repo-url> news-aggregator
+git clone https://github.com/lolade-global/news-aggregator.git
 cd news-aggregator
 
 # Copy environment file and configure API keys (see API Keys section below)
@@ -42,7 +42,7 @@ cp .env.example .env
 # Start Docker containers, install dependencies, and run migrations
 make setup
 
-# Fetch articles from all configured sources
+# Fetch articles from all configured sources (dispatches jobs and processes the queue)
 make fetch-news
 
 # The API is now available at http://localhost/api/v1/articles
@@ -58,6 +58,7 @@ composer install
 ./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate
 ./vendor/bin/sail artisan news:fetch
+./vendor/bin/sail artisan queue:work --stop-when-empty
 ```
 
 ## API Keys
@@ -274,20 +275,29 @@ make fix
 
 ## Makefile Commands
 
-| Command             | Description                                  |
-| ------------------- | -------------------------------------------- |
-| `make setup`      | Full project setup (install, build, migrate) |
-| `make up`         | Start Docker containers                      |
-| `make down`       | Stop Docker containers                       |
-| `make test`       | Run test suite                               |
-| `make lint`       | Check code style + static analysis           |
-| `make fix`        | Auto-fix code style + apply refactorings     |
-| `make fetch-news` | Fetch articles from all sources              |
-| `make db-fresh`   | Drop and recreate all tables                 |
-| `make shell`      | Open a shell in the app container            |
+| Command             | Description                                           |
+| ------------------- | ----------------------------------------------------- |
+| `make setup`      | Full project setup (install, build, migrate)          |
+| `make up`         | Start Docker containers                               |
+| `make down`       | Stop Docker containers                                |
+| `make test`       | Run test suite                                        |
+| `make lint`       | Check code style + static analysis                    |
+| `make fix`        | Auto-fix code style + apply refactorings              |
+| `make fetch-news` | Fetch articles from all sources and process the queue |
+| `make db-fresh`   | Drop and recreate all tables                          |
+| `make shell`      | Open a shell in the app container                     |
+
+## Postman Collection
+
+A Postman collection is included at `postman/News_Aggregator_API.postman_collection.json` with pre-built requests for every endpoint and filter combination. To use it:
+
+1. Open Postman and click **Import**
+2. Select the file from `postman/News_Aggregator_API.postman_collection.json`
+3. The collection uses `{{base_url}}` defaulting to `http://127.0.0.1` — adjust if needed
+4. Requests include collection-level test scripts that validate responses and auto-capture pagination cursors
 
 ## Scheduling
 
-The `news:fetch` command runs automatically every hour via Laravel's scheduler. 
+The `news:fetch` command runs automatically every hour via Laravel's scheduler.
 
 With Sail, the scheduler runs automatically when the containers are up.

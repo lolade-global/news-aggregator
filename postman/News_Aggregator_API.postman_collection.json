@@ -1,0 +1,516 @@
+{
+	"info": {
+		"name": "News Aggregator API",
+		"description": "REST API for the News Aggregator application. Fetches and serves articles from The Guardian, New York Times, and NewsAPI.org.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/health",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "health"]
+						},
+						"description": "Returns the health status of the API, database connectivity, and configured news sources."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Articles",
+			"item": [
+				{
+					"name": "Get All Articles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"]
+						},
+						"description": "Retrieves all articles with default cursor-based pagination (15 per page)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Articles - Custom Page Size",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?per_page=5",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "5",
+									"description": "Items per page (1-100)"
+								}
+							]
+						},
+						"description": "Retrieves articles with a custom page size."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Articles - With Relationships",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?include=authors,categories",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "include",
+									"value": "authors,categories",
+									"description": "Include related resources (authors, categories)"
+								}
+							]
+						},
+						"description": "Retrieves articles with authors and categories eagerly loaded."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by Source (Guardian)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?filter[source]=guardian",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "filter[source]",
+									"value": "guardian",
+									"description": "Filter by source: guardian, new_york_times, news_api_org"
+								}
+							]
+						},
+						"description": "Retrieves articles from The Guardian only."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by Source (NYT)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?filter[source]=new_york_times",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "filter[source]",
+									"value": "new_york_times",
+									"description": "Filter by source: guardian, new_york_times, news_api_org"
+								}
+							]
+						},
+						"description": "Retrieves articles from the New York Times only."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by Source (NewsAPI)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?filter[source]=news_api_org",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "filter[source]",
+									"value": "news_api_org",
+									"description": "Filter by source: guardian, new_york_times, news_api_org"
+								}
+							]
+						},
+						"description": "Retrieves articles from NewsAPI.org only."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by Title",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?filter[title]=trump",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "filter[title]",
+									"value": "trump",
+									"description": "Filter by title (partial match, max 255 chars)"
+								}
+							]
+						},
+						"description": "Retrieves articles whose title contains the given string."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by Author",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?filter[authors][name]=reuters",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "filter[authors][name]",
+									"value": "reuters",
+									"description": "Filter by author name (partial match)"
+								}
+							]
+						},
+						"description": "Retrieves articles by a specific author."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?filter[categories][name]=politics",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "filter[categories][name]",
+									"value": "politics",
+									"description": "Filter by category name (partial match)"
+								}
+							]
+						},
+						"description": "Retrieves articles in a specific category."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by Date Range",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?filter[date_from]=2026-03-01&filter[date_to]=2026-03-14",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "filter[date_from]",
+									"value": "2026-03-01",
+									"description": "Start date (ISO 8601)"
+								},
+								{
+									"key": "filter[date_to]",
+									"value": "2026-03-14",
+									"description": "End date (ISO 8601)"
+								}
+							]
+						},
+						"description": "Retrieves articles published within a date range."
+					},
+					"response": []
+				},
+				{
+					"name": "Full-Text Search",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?filter[search]=climate change",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "filter[search]",
+									"value": "climate change",
+									"description": "Full-text search (min 2, max 255 chars)"
+								}
+							]
+						},
+						"description": "Searches articles by keyword across title, description, and content."
+					},
+					"response": []
+				},
+				{
+					"name": "Sort by Published Date (Newest)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?sort=published_at desc",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "sort",
+									"value": "published_at desc",
+									"description": "Sort field and direction (e.g. published_at desc, title asc)"
+								}
+							]
+						},
+						"description": "Retrieves articles sorted by publication date, newest first."
+					},
+					"response": []
+				},
+				{
+					"name": "Sort by Title (A-Z)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?sort=title asc",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "sort",
+									"value": "title asc",
+									"description": "Sort by title ascending"
+								}
+							]
+						},
+						"description": "Retrieves articles sorted alphabetically by title."
+					},
+					"response": []
+				},
+				{
+					"name": "Combined Filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?filter[source]=guardian&filter[date_from]=2026-03-01&include=authors,categories&sort=published_at desc&per_page=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "filter[source]",
+									"value": "guardian",
+									"description": "Source filter"
+								},
+								{
+									"key": "filter[date_from]",
+									"value": "2026-03-01",
+									"description": "Date from filter"
+								},
+								{
+									"key": "include",
+									"value": "authors,categories",
+									"description": "Include relationships"
+								},
+								{
+									"key": "sort",
+									"value": "published_at desc",
+									"description": "Sort newest first"
+								},
+								{
+									"key": "per_page",
+									"value": "10",
+									"description": "10 items per page"
+								}
+							]
+						},
+						"description": "Demonstrates combining multiple filters, includes, sorting, and pagination."
+					},
+					"response": []
+				},
+				{
+					"name": "Pagination - Next Page",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?per_page=5&cursor={{next_cursor}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "5",
+									"description": "Items per page"
+								},
+								{
+									"key": "cursor",
+									"value": "{{next_cursor}}",
+									"description": "Cursor token from previous response's pagination.next_cursor"
+								}
+							]
+						},
+						"description": "Fetches the next page using a cursor token from a previous response. Copy the `next_cursor` value from a prior response into the `next_cursor` collection variable."
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Filter (400 Error)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles?filter[nonexistent]=foo",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "articles"],
+							"query": [
+								{
+									"key": "filter[nonexistent]",
+									"value": "foo",
+									"description": "Invalid filter key - should return 422"
+								}
+							]
+						},
+						"description": "Tests validation by sending an invalid filter parameter. Expects a 422 error response."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// pm.test('Status code is successful', function () {",
+					"    // pm.expect(pm.response.code).to.be.oneOf([200, 201, 204, 422]);",
+					"// });" ,
+					"",
+					"pm.test('Response is JSON', function () {",
+					"    pm.response.to.have.header('Content-Type', 'application/json');",
+					"});",
+					"",
+					"// Auto-capture cursor for pagination",
+					"if (pm.response.code === 200) {",
+					"    var json = pm.response.json();",
+					"    if (json.pagination && json.pagination.next_cursor) {",
+					"        pm.collectionVariables.set('next_cursor', json.pagination.next_cursor);",
+					"    }",
+					"}"
+				]
+			}
+		}
+	]
+}
