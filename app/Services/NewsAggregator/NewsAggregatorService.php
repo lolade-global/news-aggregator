@@ -22,16 +22,16 @@ class NewsAggregatorService
 
     public function addNewsSource(NewsSourceContract $source): self
     {
-        if (! $this->hasSource($source::class)) {
+        if (! $this->hasSource($source->getIdentifier()->value)) {
             $this->sources->push($source);
         }
 
         return $this;
     }
 
-    public function hasSource(string $sourceClass): bool
+    public function hasSource(string $identifier): bool
     {
-        return $this->sources->contains(fn (NewsSourceContract $s) => $s::class === $sourceClass);
+        return $this->sources->contains(fn (NewsSourceContract $s) => $s->getIdentifier()->value === $identifier);
     }
 
     /**

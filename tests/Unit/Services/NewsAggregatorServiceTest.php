@@ -59,14 +59,14 @@ it('prevents duplicate source registration', function () {
     expect($service->getSources())->toHaveCount(1);
 });
 
-it('checks if source exists by class name', function () {
+it('checks if source exists by identifier', function () {
     $service = new NewsAggregatorService;
     $source = mockSource();
 
     $service->addNewsSource($source);
 
-    expect($service->hasSource($source::class))->toBeTrue();
-    expect($service->hasSource('NonExistentClass'))->toBeFalse();
+    expect($service->hasSource('guardian'))->toBeTrue();
+    expect($service->hasSource('nonexistent'))->toBeFalse();
 });
 
 it('fetches and stores articles in database', function () {

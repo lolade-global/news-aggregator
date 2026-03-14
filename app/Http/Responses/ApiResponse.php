@@ -19,7 +19,7 @@ class ApiResponse
         if ($data instanceof CursorPaginator) {
             $response['data'] = $data->items();
             $response['pagination'] = self::extractCursorPagination($data);
-        } elseif (method_exists($data, 'resource') && $data->resource instanceof CursorPaginator) {
+        } elseif (is_object($data) && property_exists($data, 'resource') && $data->resource instanceof CursorPaginator) {
             $response['data'] = $data->resolve();
             $response['pagination'] = self::extractCursorPagination($data->resource);
         }
