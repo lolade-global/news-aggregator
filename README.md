@@ -64,11 +64,11 @@ composer install
 
 Sign up for free API keys from each source and add them to your `.env` file:
 
-| Source | Sign Up | Free Tier |
-|--------|---------|-----------|
-| The Guardian | https://open-platform.theguardian.com/access/ | 500 requests/day |
-| New York Times | https://developer.nytimes.com/get-started | 500 requests/day |
-| NewsAPI.org | https://newsapi.org/register | 100 requests/day, localhost only |
+| Source         | Sign Up                                       | Free Tier                        |
+| -------------- | --------------------------------------------- | -------------------------------- |
+| The Guardian   | https://open-platform.theguardian.com/access/ | 500 requests/day                 |
+| New York Times | https://developer.nytimes.com/get-started     | 500 requests/day                 |
+| NewsAPI.org    | https://newsapi.org/register                  | 100 requests/day, localhost only |
 
 ```env
 GUARDIAN_API_KEY=your-guardian-key
@@ -86,19 +86,19 @@ Returns a paginated list of articles.
 
 **Query Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `filter[title]` | string | Partial match on article title |
-| `filter[source]` | string | Exact match: `guardian`, `new_york_times`, `news_api_org` |
-| `filter[authors.name]` | string | Partial match on author name |
-| `filter[categories.name]` | string | Partial match on category name |
-| `filter[date_from]` | date | Articles published on or after this date (Y-m-d) |
-| `filter[date_to]` | date | Articles published on or before this date (Y-m-d) |
-| `filter[search]` | string | Full-text search across title and description (min 2 chars) |
-| `include` | string | Comma-separated: `authors`, `categories` |
-| `sort` | string | Sort field: `title`, `source`, `published_at`, `created_at`. Prefix with `-` for descending. Default: `-published_at` |
-| `per_page` | integer | Items per page (1-100, default: 15) |
-| `cursor` | string | Cursor for next/previous page |
+| Parameter                   | Type    | Description                                                                                                                      |
+| --------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `filter[title]`           | string  | Partial match on article title                                                                                                   |
+| `filter[source]`          | string  | Exact match:`guardian`, `new_york_times`, `news_api_org`                                                                   |
+| `filter[authors.name]`    | string  | Partial match on author name                                                                                                     |
+| `filter[categories.name]` | string  | Partial match on category name                                                                                                   |
+| `filter[date_from]`       | date    | Articles published on or after this date (Y-m-d)                                                                                 |
+| `filter[date_to]`         | date    | Articles published on or before this date (Y-m-d)                                                                                |
+| `filter[search]`          | string  | Full-text search across title and description (min 2 chars)                                                                      |
+| `include`                 | string  | Comma-separated:`authors`, `categories`                                                                                      |
+| `sort`                    | string  | Sort field:`title`, `source`, `published_at`, `created_at`. Prefix with `-` for descending. Default: `-published_at` |
+| `per_page`                | integer | Items per page (1-100, default: 15)                                                                                              |
+| `cursor`                  | string  | Cursor for next/previous page                                                                                                    |
 
 **Example Request:**
 
@@ -169,13 +169,13 @@ Returns system health and configured source status.
 
 ### Error Responses
 
-| Status | Meaning |
-|--------|---------|
-| 400 | Invalid filter or sort parameter |
-| 404 | Route not found |
-| 422 | Validation error (e.g. `per_page` > 100) |
-| 429 | Too many requests |
-| 500 | Internal server error |
+| Status | Meaning                                   |
+| ------ | ----------------------------------------- |
+| 400    | Invalid filter or sort parameter          |
+| 404    | Route not found                           |
+| 422    | Validation error (e.g.`per_page` > 100) |
+| 429    | Too many requests                         |
+| 500    | Internal server error                     |
 
 ```json
 {
@@ -249,6 +249,7 @@ make test
 Tests use SQLite in-memory and array cache/queue drivers — no Docker required.
 
 **Test coverage:**
+
 - Unit tests for all 3 news source implementations (HTTP faking, rate limiting, retries)
 - Unit tests for the aggregator service (persistence, deduplication, relationship syncing)
 - Feature tests for article API endpoint (pagination, all filters, sorting, includes, validation)
@@ -265,32 +266,28 @@ make lint
 make fix
 ```
 
-| Tool | Purpose |
-|------|---------|
-| **Pint** | PSR-12 code style |
-| **PHPStan** (Level 5) | Static analysis with Larastan |
-| **Rector** | Automated refactoring (PHP 8.4 ruleset) |
+| Tool                        | Purpose                                 |
+| --------------------------- | --------------------------------------- |
+| **Pint**              | PSR-12 code style                       |
+| **PHPStan** (Level 5) | Static analysis with Larastan           |
+| **Rector**            | Automated refactoring (PHP 8.4 ruleset) |
 
 ## Makefile Commands
 
-| Command | Description |
-|---------|-------------|
-| `make setup` | Full project setup (install, build, migrate) |
-| `make up` | Start Docker containers |
-| `make down` | Stop Docker containers |
-| `make test` | Run test suite |
-| `make lint` | Check code style + static analysis |
-| `make fix` | Auto-fix code style + apply refactorings |
-| `make fetch-news` | Fetch articles from all sources |
-| `make db-fresh` | Drop and recreate all tables |
-| `make shell` | Open a shell in the app container |
+| Command             | Description                                  |
+| ------------------- | -------------------------------------------- |
+| `make setup`      | Full project setup (install, build, migrate) |
+| `make up`         | Start Docker containers                      |
+| `make down`       | Stop Docker containers                       |
+| `make test`       | Run test suite                               |
+| `make lint`       | Check code style + static analysis           |
+| `make fix`        | Auto-fix code style + apply refactorings     |
+| `make fetch-news` | Fetch articles from all sources              |
+| `make db-fresh`   | Drop and recreate all tables                 |
+| `make shell`      | Open a shell in the app container            |
 
 ## Scheduling
 
-The `news:fetch` command runs automatically every hour via Laravel's scheduler. To activate it, add this cron entry on the server:
-
-```
-* * * * * cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1
-```
+The `news:fetch` command runs automatically every hour via Laravel's scheduler. 
 
 With Sail, the scheduler runs automatically when the containers are up.
