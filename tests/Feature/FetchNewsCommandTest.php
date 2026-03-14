@@ -6,6 +6,10 @@ use App\Jobs\FetchArticlesFromSourceJob;
 use App\Services\NewsAggregator\NewsAggregatorService;
 use Illuminate\Support\Facades\Queue;
 
+beforeEach(function () {
+    app()->singleton(NewsAggregatorService::class, fn () => new NewsAggregatorService);
+});
+
 function registerFakeSource(NewsSourceEnum $identifier = NewsSourceEnum::GUARDIAN): void
 {
     $source = Mockery::mock(NewsSourceContract::class);
