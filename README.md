@@ -39,6 +39,11 @@ cd news-aggregator
 # Copy environment file and configure API keys (see API Keys section below)
 cp .env.example .env
 
+# Set your API keys in the env
+GUARDIAN_API_KEY=your-guardian-key
+NYT_API_KEY=your-nyt-key
+NEWS_API_ORG_API_KEY=your-newsapi-key
+
 # Start Docker containers, install dependencies, and run migrations
 make setup
 
