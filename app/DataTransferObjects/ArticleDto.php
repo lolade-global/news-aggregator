@@ -46,7 +46,7 @@ final readonly class ArticleDto
         }
 
         return array_filter(
-            array_map('trim', explode(',', $this->author)),
+            array_map(trim(...), explode(',', $this->author)),
             fn (string $name) => $name !== '',
         );
     }
@@ -61,7 +61,7 @@ final readonly class ArticleDto
         }
 
         return array_filter(
-            array_map('trim', explode(',', $this->category)),
+            array_map(trim(...), explode(',', $this->category)),
             fn (string $name) => $name !== '',
         );
     }

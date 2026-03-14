@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class NewsAggregatorService
 {
     /** @var Collection<int, NewsSourceContract> */
-    private Collection $sources;
+    private readonly Collection $sources;
 
     public function __construct()
     {
@@ -83,9 +83,7 @@ class NewsAggregatorService
             return;
         }
 
-        $authorIds = collect($authorNames)->map(function (string $name) {
-            return Author::firstOrCreate(['name' => $name])->id;
-        })->all();
+        $authorIds = collect($authorNames)->map(fn (string $name) => Author::firstOrCreate(['name' => $name])->id)->all();
 
         $article->authors()->sync($authorIds);
     }
@@ -101,9 +99,7 @@ class NewsAggregatorService
             return;
         }
 
-        $categoryIds = collect($categoryNames)->map(function (string $name) {
-            return Category::firstOrCreate(['name' => $name])->id;
-        })->all();
+        $categoryIds = collect($categoryNames)->map(fn (string $name) => Category::firstOrCreate(['name' => $name])->id)->all();
 
         $article->categories()->sync($categoryIds);
     }

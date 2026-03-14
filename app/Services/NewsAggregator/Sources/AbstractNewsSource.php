@@ -124,7 +124,7 @@ abstract class AbstractNewsSource implements NewsSourceContract
             } catch (\Throwable $e) {
                 $lastException = $e;
 
-                Log::warning("Attempt ".($i + 1)."/{$attempts} failed for {$this->getSourceName()}: {$e->getMessage()}");
+                Log::warning('Attempt '.($i + 1)."/{$attempts} failed for {$this->getSourceName()}: {$e->getMessage()}");
 
                 if ($i < $attempts - 1) {
                     $delay = $delays[$i] ?? end($delays);
@@ -144,7 +144,7 @@ abstract class AbstractNewsSource implements NewsSourceContract
      */
     protected function makeApiRequest(): array
     {
-        $url = rtrim($this->getBaseUrl(), '/').'/'.$this->getEndpoint();
+        $url = rtrim((string) $this->getBaseUrl(), '/').'/'.$this->getEndpoint();
 
         $response = Http::timeout($this->getTimeout())
             ->get($url, $this->getQueryParams());

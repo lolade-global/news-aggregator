@@ -5,7 +5,6 @@ use App\Exceptions\NewsSourceException;
 use App\Services\NewsAggregator\Sources\GuardianSource;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\RateLimiter;
 
 beforeEach(function () {
     Config::set('news_sources.guardian', [

@@ -63,7 +63,7 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         });
 
-        $exceptions->renderable(function (\Throwable $e, Request $request) {
+        $exceptions->renderable(function (Throwable $e, Request $request) {
             if ($request->is('api/*') || $request->expectsJson()) {
                 $message = app()->isProduction() ? 'Internal server error.' : $e->getMessage();
 

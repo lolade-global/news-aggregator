@@ -73,7 +73,7 @@ class NytSource extends AbstractNewsSource
             return null;
         }
 
-        if (! str_starts_with($imageUrl, 'http')) {
+        if (! str_starts_with((string) $imageUrl, 'http')) {
             return 'https://www.nytimes.com/'.$imageUrl;
         }
 
@@ -88,7 +88,7 @@ class NytSource extends AbstractNewsSource
             return null;
         }
 
-        return preg_replace('/^By\s+/i', '', $byline);
+        return preg_replace('/^By\s+/i', '', (string) $byline);
     }
 
     private function extractCategory(array $item): string
